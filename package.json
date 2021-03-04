@@ -1,0 +1,22 @@
+{
+  "name": "thoughts",
+  "version": "1.0.0",
+  "description": "CRUD diary app",
+  "main": "handler.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "serverless",
+    "lambda",
+    "aws",
+    "node"
+  ],
+  "author": "sebastian maddox",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.855.0",
+    "sanitize": "^2.1.0",
+    "uuid": "^3.3.2"
+  }
+}

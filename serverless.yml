@@ -1,0 +1,79 @@
+service: serverless-crud
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-southeast-2
+  stage: dev
+  lambdaHashingVersion: 20201221
+  apiGateway:
+    shouldStartNameWithService: true
+  iam:
+    role:
+      statements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DescribeTable
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource: "arn:aws:dynamodb:ap-southeast-2:*:*"
+
+functions:
+  create:
+    handler: handler.create
+    events:
+      - http:
+          path: thoughts
+          method: post
+          cors: true
+  readAll:
+    handler: handler.readAll
+    events:
+      - http:
+          path: thoughts
+          method: get
+          cors: true
+  readOne:
+    handler: handler.readOne
+    events:
+      - http:
+          path: thoughts/{id}
+          method: get
+          cors: true
+  update:
+    handler: handler.update
+    events:
+      - http:
+          path: thoughts/{id}
+          method: put
+          cors: true
+  delete:
+    handler: handler.delete
+    events:
+      - http:
+          path: thoughts/{id}
+          method: delete
+          cors: true
+
+resources:
+  Resources:
+    ThoughtsDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: 'thoughts' 
